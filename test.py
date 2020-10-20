@@ -1,4 +1,7 @@
-import requests
-from lxml import etree
 
-resp = requests.get("http://www.baidu.com")
+
+import common_header
+
+for h,v in common_header.headers.items():
+    print(h,v)
+
