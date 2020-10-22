@@ -28,5 +28,6 @@ def book_info(url: str):
         title = ''.join(titles).strip()
         value = '/'.join(values).strip()
         info[title] = value
-    info['star'] = ''.join(selector.xpath("//div[@id='interest_sectl']//strong/text()")).strip()
+    info['评分'] = ''.join(selector.xpath("//div[@id='interest_sectl']//strong/text()")).strip()
+    info['目录'] = book_directory(url)
     return info
