@@ -16,18 +16,20 @@ def book_info(url: str):
     resp = requests.get(url=url, headers=headers)
     selector = etree.HTML(resp.text)
     titles = clear_text(selector.xpath("//div[@id='info']/span[@class='pl']/text()"))
+    values = list(filter(lambda x:x!=':',clear_text(selector.xpath("//div[@id='info']/text() | //div[@id='info']/a/text()"))))
     titles = list(map(lambda x:x.replace(':',''),titles))
-    values = clear_text(selector.xpath("//div[@id='info']/text()"))
-    info = {}
-    for k,v in zip(titles, values):
-        info[k] = v
     aSpan = selector.xpath("//div[@id='info']/span[not(@class)]")
     for v in aSpan:
-        titles = v.xpath(".//span[@class='pl']//text()")
-        values = v.xpath(".//a//text()")
-        title = ''.join(titles).strip()
-        value = '/'.join(values).strip()
-        info[title] = value
+        titles2 = v.xpath(".//span[@class='pl']//text()")
+        values2 = v.xpath(".//a//text()")
+        title = ''.join(titles2).strip()
+        value = '/'.join(values2).strip()
+
+        titles.append(title)
+        values.append(value)
+    info = {}
+    for k, v in zip(titles, values):
+        info[k] = v
     info['评分'] = ''.join(selector.xpath("//div[@id='interest_sectl']//strong/text()")).strip()
     info['目录'] = book_directory(url)
     return info
