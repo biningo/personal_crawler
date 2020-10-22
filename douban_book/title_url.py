@@ -39,4 +39,4 @@ def book_title_url_crawler(tag,type,limit=1000):
         size+=1
         if size>=limit:
             return all_titles,all_urls
-    return all_titles,all_urls
+    return {k:v for k,v in zip(all_titles,all_urls)}
