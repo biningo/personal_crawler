@@ -35,8 +35,13 @@ def book_info(url: str):
         titles.append(title)
         values.append(value)
     info = {}
+    if book_name=='':
+        return {}
     info['书名'] = book_name
     for k, v in zip(titles, values):
+        if k=='副标题':
+            info['书名']+=':'+v
+            continue
         info[k] = v
     info['评分'] = ''.join(selector.xpath("//div[@id='interest_sectl']//strong/text()")).strip()
     info['目录'] = book_directory(url)
