@@ -16,7 +16,7 @@ def clear_text(content):
     return list(filter(lambda x: x != '', list(map(lambda x: x.strip(), content))))
 
 
-def book_info(url: str):
+def book_info_crawler(url: str):
     resp = requests.get(url=url, headers=headers)
     selector = etree.HTML(resp.text)
     book_name = ''.join(clear_text(selector.xpath("//div[@id='wrapper']/h1//text()")))
@@ -45,4 +45,7 @@ def book_info(url: str):
         info[k] = v
     info['评分'] = ''.join(selector.xpath("//div[@id='interest_sectl']//strong/text()")).strip()
     info['目录'] = book_directory(url)
+
+    info['image'] = selector.xpath("//div[@id='mainpic']//img/@src")[0]
+
     return info
